@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        form {
+            display: inline;
+        }
+    </style>
     <title>Listing Detail</title>
 </head>
 <body>
@@ -17,6 +22,10 @@
     <br>
     <form action="/listing/<%= data._id %>/edit" method="get">
         <button>Update</button>
+    </form>
+
+    <form action="/listing/<%= data._id %>?_method=DELETE" method="post">
+        <button>Delete</button>
     </form>
 </body>
 </html>

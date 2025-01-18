@@ -54,3 +54,32 @@ app.get("/listing/:id/edit", async(req,res)=>{
     res.render("update.ejs", {data});
 });
 
+app.patch("/listing/:id", async(req,res)=>{
+   let {id}=req.params;
+   function removeEmptyStrings(obj) {
+    // Create a new object to store the result
+    const newObj = {};
+  
+    // Loop through each key in the object
+    for (const key in obj) {
+      // Check if the value is not an empty string
+      if (obj[key] !== "") {
+        // Add the key-value pair to the new object
+        newObj[key] = obj[key];
+      }
+    }
+  
+    return newObj;
+  }
+
+  const result = removeEmptyStrings(req.body);
+  console.log(result); 
+   await Listing.updateOne({"_id": id}, result);
+   res.redirect(`/listing/${id}`);
+});
+
+app.delete("/listing/:id", async(req,res)=>{
+  let {id}= req.params;
+  await Listing.deleteOne({"_id": id});
+  res.redirect("/");
+});

@@ -6,7 +6,8 @@
     <title>Update Listing</title>
 </head>
 <body>
-    <form action="/listing" method="post">
+    <h2>Update Listing:</h2>
+    <form action="/listing/<%=data._id%>?_method=PATCH" method="post">
         <input type="text" placeholder="<%= data.title %>" name="title"><br><br>
         <textarea name="description" id="" cols="30" rows="6" placeholder="<%= data.description %>"></textarea><br><br>
         <input type="text" name="price" placeholder="<%= data.price %>"><br><br>
