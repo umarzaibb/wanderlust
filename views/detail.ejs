@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Detail</title>
+</head>
+<body>
+    <h2>Listing Detail:</h2>
+    <ul>
+       <li><%=data.title %></li>
+       <li><%= data.description%></li>
+       <li>&#8377;<%= data.price.toLocaleString()%></li>
+       <li><%=data.location %></li>
+       <li><%= data.country%></li>
+    </ul>
+    <br>
+    <form action="/listing/<%= data._id %>/edit" method="get">
+        <button>Update</button>
+    </form>
+</body>
+</html>
