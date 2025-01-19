@@ -1,0 +1,19 @@
+<% layout('layouts/boilerplate') -%>
+<body>
+    <div class="row">
+        <h4 class="mt-2 col-8 offset-3">Listing Details</h4>
+        <img src="<%= data.image.url %>" class="detail-img col-8 offset-3" alt="listing_image">
+        <i><b><p class="col-8 offset-3"><%=data.title %></p></b></i>
+        <div class="row p-detail-div"><p class="col-6 offset-3 p-detail"><%=data.description %></p>
+            <p class="col-8 offset-3 p-detail">&#8377;<%= data.price.toLocaleString()%></p>
+            <p class="col-8 offset-3 p-detail"><%=data.location %></p>
+            <p class="col-8 offset-3 p-detail"><%=data.country %></p></div>
+    <br><br><br>
+        <a href="/listing/<%= data._id %>/edit" class="btn btn-dark col-1 offset-3">Edit</a>
+
+    <form action="/listing/<%= data._id %>?_method=DELETE" method="post" class="col-1 " id="detail-form">
+        <button class="btn btn-danger">Delete</button>
+    </form>
+    </div>
+    <br>
+</body>

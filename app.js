@@ -4,12 +4,15 @@ const Listing=require("./models/dbModel");
 const mongoose = require('mongoose');
 const path=require("path");
 var methodOverride = require('method-override');
+let  ejsMate= require('ejs-mate');
 
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
+app.engine('ejs', ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
 main().catch(err => console.log(err));
 
@@ -25,12 +28,12 @@ app.listen("8080", (req,res)=>{
 //show route
 app.get("/", async(req,res)=>{
    let data=await Listing.find({});
-   res.render("index.ejs", {data});
+   res.render("listings/index.ejs", {data});
 })
 
 //fetch add new form
 app.get("/listing/new", (req,res)=>{
-    res.render("add.ejs");
+    res.render("listings/add.ejs");
 });
 
 app.post("/listing", (req,res)=>{
@@ -44,14 +47,15 @@ app.post("/listing", (req,res)=>{
 app.get("/listing/:id", async(req,res)=>{
     let {id}=req.params;
     let data=await Listing.findById(id);
-    res.render("detail.ejs", {data});
+    res.render("listings/detail.ejs", {data});
 });
 
 //update 
 app.get("/listing/:id/edit", async(req,res)=>{
     let {id}=req.params;
     let data=await Listing.findById(id);
-    res.render("update.ejs", {data});
+    console.log(data);
+    res.render("listings/update.ejs", {data});
 });
 
 app.patch("/listing/:id", async(req,res)=>{

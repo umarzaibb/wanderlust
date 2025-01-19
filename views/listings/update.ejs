@@ -1,0 +1,37 @@
+<% layout('layouts/boilerplate') -%>
+<body>
+    <h4 class="mt-2 offset-2">Edit your Listing:</h4>
+    <form action="/listing/<%= data._id %>?_method=PATCH" method="post" class="mt-3" >
+
+    <div class="mb-3 col-8 offset-2">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" placeholder="enter title" name="title" value="<%= data.title %>" class="form-control">
+    </div>
+    <div class="mb-3 col-8 offset-2">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description" id="" class="form-control"  ><%= data.description %></textarea>
+    </div>
+
+    <div class="mb-3 col-8 offset-2">
+        <label for="image" class="form-label">Image's URL</label>
+        <input type="text" placeholder="enter image's link/url" name="image.url" class="form-control" value="<%= data.image.url %>" >
+    </div>
+
+    <div class="row">
+        <div class="mb-3 col-3 offset-2">
+            <label for="price" class="form-label">Price</label>
+            <input type="text" name="price" placeholder="enter price" class="form-control" value="<%= data.price %>" >
+        </div>
+        <div class="mb-3 col-5">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="country" placeholder="enter country" class="form-control" value="<%= data.country %>" >
+        </div>
+    </div>
+    <div class="mb-3 col-8 offset-2">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" name="location" placeholder="enter location" class="form-control" value="<%= data.location %>" >
+    </div>
+
+       <button class="btn btn-danger mb-4 col-4 offset-4">Edit</button>
+    </form>
+</body>
