@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
-const data=require("./data.js");
+const data=require("./userData.js");
+const { ref } = require('joi');
+const reviews=require("./reviewsModel.js");
+const wrapAsync=require("../utils/wrapAsync.js");
 
 main().catch(err => console.log(err));
 
@@ -38,10 +41,24 @@ let ListingSchema=new mongoose.Schema({
                 v===""? "https://unsplash.com/photos/a-woman-standing-in-a-bedroom-looking-out-the-window-zMPnsd9IzIo" : v,
             
         }
-    }
+    },
+    review: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: "review"
+        }
+    ]
 });
 
+ListingSchema.post("findOneAndDelete",async (listing)=>{
+   if(listing){
+    await reviews.deleteMany({_id: {$in: listing.review}});
+   }
+   console.log("done")
+} );
+
 let Listings= new mongoose.model("listings", ListingSchema);
+
 
 Listings.insertMany(data.data);
 

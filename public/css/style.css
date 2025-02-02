@@ -52,7 +52,7 @@ nav {
     border-bottom: 0.75px solid rgb(201, 200, 200);
 }
 
-.card {
+.i-card {
     border: none;
 }
 
@@ -78,7 +78,7 @@ nav {
     width: fit-content;
 }
 
-.card{
+.i-card{
     margin-left: 4.5vw !important; 
 }
 
@@ -109,12 +109,10 @@ nav {
 }
 
 .p-detail {
-    padding: 0;
-    line-height: 0.9rem;
-    font-weight: 450;
+    font-weight: 400;
 }
 
-.p-detail-div :nth-of-type(1) {
+.p-detail-div :nth-child(1) {
     line-height: 1.2rem;
 }
 

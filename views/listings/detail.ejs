@@ -1,10 +1,10 @@
 <% layout('layouts/boilerplate') -%>
 <body>
     <div class="row">
-        <h4 class="mt-2 col-8 offset-3">Listing Details</h4>
+        <i><h4 class="mt-2 col-8 offset-3"><%=data.title %> </h4></i>
         <img src="<%= data.image.url %>" class="detail-img col-8 offset-3" alt="listing_image">
-        <i><b><p class="col-8 offset-3"><%=data.title %></p></b></i>
-        <div class="row p-detail-div"><p class="col-6 offset-3 p-detail"><%=data.description %></p>
+        <div class="row p-detail-div">
+            <b> <p class="col-6 offset-3"><%=data.description %></p></b>
             <p class="col-8 offset-3 p-detail">&#8377;<%= data.price.toLocaleString()%></p>
             <p class="col-8 offset-3 p-detail"><%=data.location %></p>
             <p class="col-8 offset-3 p-detail"><%=data.country %></p></div>
@@ -15,5 +15,39 @@
         <button class="btn btn-danger">Delete</button>
     </form>
     </div>
+    <form action="/listing/<%= data._id %>/review" method="post" class="col-8 offset-3 needs-validation" novalidate >
+        <hr>
+     <h5>Review the listing:</h5><br>
+     <input type="range" name="review[rating]" min="1" max="5" class="form-range" ><br>
+     <textarea name="review[comment]" rows="5" cols="30" class="form-control" required></textarea>
+     <div class="invalid-feedback">
+        Please write comment!
+      </div>
+      <br>
+     <button class="btn btn-dark btn-sm">Submit</button>
+     <hr>
+    </form>
     <br>
+    <h5 class="offset-3">Reviews:</h5>
+    <div class="row row-cols-lg-2 offset-2 row-cols-md-2">
+        <% if (data.review.length === 0) { %>
+            <p class="col-4 offset-1">No review available at current moment!</p>
+           <% } %>
+    <% for( review of data.review ) { %>
+        <div class="card col-4 mb-4 ml-2 review-card" style="width: 40vw; margin-left: 10vw">
+            <div class="card-body">
+              <i><b> <p>@subscribed user</p></b></i>
+              <b><p class="card-text" ><%=review.comment%></p></b>
+              <p class="card-text">
+                <% for( let i=1; i<=review.rating ;i++) { %>
+                <span>⭐</span>
+                <% } %>
+                <%=review.rating%> stars</p>
+                <form action="/listing/<%= data._id %>/review/<%= review._id %>?_method=DELETE" method="post">
+                    <button class="btn btn-dark btn-sm mb-2">DELETE</button>
+                </form>
+            </div> 
+    </div>
+    <% } %>
+</div>
 </body>
