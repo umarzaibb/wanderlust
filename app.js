@@ -6,6 +6,20 @@ var methodOverride = require('method-override');
 let  ejsMate= require('ejs-mate');
 const ExpressError=require("./utils/expresserror.js");
 
+const cookieParser=require("cookie-parser");
+const session = require('express-session');
+const flash = require('connect-flash');
+
+let sessionOptions={
+  secret: 'iHaveSecrets',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { 
+    httpOnly:true,
+    expires: Date.now()+ 3*24*60*60*1000,
+    maxAge: 3*24*60*60*1000
+  }};
+
 //routes
 const ListingRoute=require("./routes/listingRoute.js");
 const ReviewRoute=require("./routes/reviewRoute.js");
@@ -17,9 +31,23 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
+app.use(cookieParser());
+app.use(session(sessionOptions));
+app.use(flash());
+app.use((req,res,next)=>{
+  res.locals.success= req.flash("success");
+  res.locals.error= req.flash("error");
+  next();
+})
+
 //routes
 app.use("/listing", ListingRoute );
 app.use("/listing/:id", ReviewRoute);
+
+app.get("/" ,(req,res)=>{
+  res.redirect("/listing");
+});
+
 
 
 main().catch(err => console.log(err));
