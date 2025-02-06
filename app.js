@@ -5,6 +5,8 @@ const path=require("path");
 var methodOverride = require('method-override');
 let  ejsMate= require('ejs-mate');
 const ExpressError=require("./utils/expresserror.js");
+const Passport=require("passport");
+const PassportConfig=require("./authentication/passport.js");
 
 const cookieParser=require("cookie-parser");
 const session = require('express-session');
@@ -23,6 +25,8 @@ let sessionOptions={
 //routes
 const ListingRoute=require("./routes/listingRoute.js");
 const ReviewRoute=require("./routes/reviewRoute.js");
+const UserRoute=require("./routes/signupRoute.js");
+const passport = require("passport");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -40,9 +44,13 @@ app.use((req,res,next)=>{
   next();
 })
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 //routes
 app.use("/listing", ListingRoute );
 app.use("/listing/:id", ReviewRoute);
+app.use("/", UserRoute);
 
 app.get("/" ,(req,res)=>{
   res.redirect("/listing");

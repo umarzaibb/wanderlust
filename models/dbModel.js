@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const data=require("./userData.js");
-const { ref } = require('joi');
 const reviews=require("./reviewsModel.js");
-const wrapAsync=require("../utils/wrapAsync.js");
 
 main().catch(err => console.log(err));
 
