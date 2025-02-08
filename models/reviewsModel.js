@@ -16,6 +16,10 @@ let reviewSchema=mongoose.Schema({
     created_at: {
         type :Date,
         default: Date.now()
+    },
+    created_by: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User"
     }
 });
 

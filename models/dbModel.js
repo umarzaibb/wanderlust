@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const data=require("./userData.js");
 const reviews=require("./reviewsModel.js");
+const User=require("./user.js");
+
 
 main().catch(err => console.log(err));
 
@@ -9,6 +11,7 @@ async function main() {
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
+
 
 let ListingSchema=new mongoose.Schema({
     title: {
@@ -45,7 +48,12 @@ let ListingSchema=new mongoose.Schema({
             type: mongoose.SchemaTypes.ObjectId,
             ref: "review"
         }
-    ]
+    ],
+    owner: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User",
+        required:true
+    }
 });
 
 ListingSchema.post("findOneAndDelete",async (listing)=>{
@@ -57,7 +65,12 @@ ListingSchema.post("findOneAndDelete",async (listing)=>{
 
 let Listings= new mongoose.model("listings", ListingSchema);
 
+function insertInDB(){
+    for(let i of data.data){
+        i.owner=new mongoose.Types.ObjectId('67a4d2dde898c8ab74b6199c');
+    }
+}
 
+insertInDB();
 Listings.insertMany(data.data);
-
 module.exports=Listings;

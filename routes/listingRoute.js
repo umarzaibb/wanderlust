@@ -5,17 +5,9 @@ let wrapAsync=require("../utils/wrapAsync");
 let ExpressError=require("../utils/expresserror.js");
 const Schema = require("../validation/schema.js");
 const Joi = require('joi');
-
-function checkValidation(req,res,next){
-    let result=Schema.validate(req.body);
-    console.log(result);
-    if(result.error){
-      throw new ExpressError(400, result.error.message);
-    }else{
-      next();
-    } 
-  }
-
+let {IsLoggin, isOwner, checkValidation}= require("../utils/middleware.js");
+const { mongoose } = require("mongoose");
+const { populate } = require("../models/user.js");
   
 //show route
 router.get("/", async(req,res)=>{
@@ -24,14 +16,16 @@ router.get("/", async(req,res)=>{
  })
  
  //fetch add new form
- router.get("/new", (req,res)=>{
+ router.get("/new",IsLoggin, (req,res)=>{
      res.render("listings/add.ejs");
  });
  
- router.post("/",checkValidation ,wrapAsync( async(req,res,next)=>{
+ router.post("/",IsLoggin,checkValidation ,wrapAsync( async(req,res,next)=>{
   try{
    let data=req.body;
-   let newListing=new Listing(data);
+   data.owner=req.user;
+   let newListing=new Listing(data, req.user);
+   
    await newListing.save().then(
    req.flash("success" , "Successfully added new listing"),
   );
@@ -44,11 +38,15 @@ router.get("/", async(req,res)=>{
  //detail show
  router.get("/:id",wrapAsync( async(req,res)=>{
      let {id}=req.params;
-     let data=await Listing.findById(id).populate("review");
+     let data=await Listing.findById(id)
+     .populate({path: "review" , populate: {path: "created_by"}})
+     .populate("owner");
+     
      if(!data){
       req.flash("error", "Listing not found");
       res.redirect("/listing");
      }
+     res.locals.user=req.user;
      res.render("listings/detail.ejs", {data});
  }));
 
@@ -65,7 +63,7 @@ router.get("/:id/edit", async(req,res)=>{
     res.render("listings/update.ejs", {data});
 });
 
-router.patch("/:id",checkValidation ,wrapAsync( async(req,res,next)=>{
+router.patch("/:id",checkValidation ,isOwner,wrapAsync( async(req,res,next)=>{
   let {id}=req.params;
   function removeEmptyStrings(obj) {
    // Create a new object to store the result
@@ -86,13 +84,12 @@ if(!req.body){
   throw new ExpressError(400, "Invalid Data!");
 }
  const result = removeEmptyStrings(req.body);
-  await Listing.updateOne({"_id": id}, result).then(
-    req.flash("success" , "Updated successfully!"),
-   );;;
-  res.redirect(`/listing/${id}`);
+ let user=await Listing.findByIdAndUpdate(id, result);
+   req.flash("success", "Updated Listing successfully!");
+ res.redirect(`/listing/${id}`);
 }));
 
-router.delete("/:id", async(req,res)=>{
+router.delete("/:id",isOwner, async(req,res)=>{
   let {id}= req.params;
   await Listing.findByIdAndDelete(id).then(
     req.flash("success" , "Deleted listing!"),
