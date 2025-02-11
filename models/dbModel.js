@@ -33,14 +33,9 @@ let ListingSchema=new mongoose.Schema({
     image: {
         filename: {
             type: String,
-            default: "listingimage"
         },
         url : {
             type: String,
-            default: "https://unsplash.com/photos/a-woman-standing-in-a-bedroom-looking-out-the-window-zMPnsd9IzIo",
-            set: (v)=>
-                v===""? "https://unsplash.com/photos/a-woman-standing-in-a-bedroom-looking-out-the-window-zMPnsd9IzIo" : v,
-            
         }
     },
     review: [

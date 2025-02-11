@@ -11,18 +11,33 @@ module.exports.addListingForm=(req,res)=>{
 };
 
 module.exports.submitListingForm=async(req,res,next)=>{
-    try{
-     let data=req.body;
-     data.owner=req.user;
-     let newListing=new Listing(data, req.user);
-     
+   try{
+     let {path,filename}=req.file;
+     let {title, description, price, country, location}=req.body;
+     let data={
+      title,
+      description,
+      price,
+      country,
+      location,
+      image:{
+        filename,
+        url: path
+      },
+      owner: req.user
+     }
+    //  data.image.url=url;
+    //  data.image.filename=filename;
+    //  data.owner=req.user;
+    //  console.log(data);
+     let newListing=new Listing(data);
      await newListing.save().then(
      req.flash("success" , "Successfully added new listing"),
     );
      res.redirect("/listing");
     }catch(err){
      next(err);
-    }
+     }
    };
 
 module.exports.ListingDetail=async(req,res)=>{
