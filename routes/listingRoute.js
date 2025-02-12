@@ -18,8 +18,8 @@ router.route("/")
  //detail show
  router.route("/:id")
  .get(wrapAsync( listingController.ListingDetail))
- .patch(checkValidation ,isOwner,wrapAsync(listingController.submitUpdateForm))
- .delete(isOwner, wrapAsync(listingController.destroyListing));
+ .patch(IsLoggin,isOwner,upload.single("image.url"),wrapAsync(listingController.submitUpdateForm))
+ .delete(IsLoggin,isOwner, wrapAsync(listingController.destroyListing));
 
 
 //update 

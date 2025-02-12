@@ -61,7 +61,8 @@ module.exports.UpdateListingForm=async(req,res)=>{
       req.flash("error", "Listing not found");
       res.redirect("/listing");
     }
-    res.render("listings/update.ejs", {data});
+    let lowQualityImg=data.image.url.replace("/upload", "/upload/q_10");
+    res.render("listings/update.ejs", {data, lowQualityImg});
 };
 
 module.exports.submitUpdateForm= async(req,res,next)=>{
@@ -84,8 +85,17 @@ module.exports.submitUpdateForm= async(req,res,next)=>{
   if(!req.body){
     throw new ExpressError(400, "Invalid Data!");
   }
-   const result = removeEmptyStrings(req.body);
+   const result = removeEmptyStrings(req.body.listing);
+   console.log(result);
    let user=await Listing.findByIdAndUpdate(id, result);
+   console.log(user);
+   if(req.file){
+    let {path,filename}=req.file;
+    user.image.url=path;
+    user.image.filename=filename;
+    user.save();
+   }
+   console.log(user);
      req.flash("success", "Updated Listing successfully!");
    res.redirect(`/listing/${id}`);
   };

@@ -1,39 +1,41 @@
 <% layout('layouts/boilerplate') -%>
 <body>
     <h4 class="mt-2 offset-2">Edit your Listing:</h4>
-    <form action="/listing/<%= data._id %>?_method=PATCH" method="post" class="mt-3 needs-validation" novalidate >
+    <form action="/listing/<%= data._id %>?_method=PATCH" method="post" class="mt-3 needs-validation" novalidate enctype="multipart/form-data" >
 
     <div class="mb-3 col-8 offset-2">
         <label for="title" class="form-label">Title</label>
-        <input type="text" placeholder="enter title" name="title" value="<%= data.title %>" class="form-control" required>
+        <input type="text" placeholder="enter title" name="listing[title]" value="<%= data.title %>" class="form-control" required>
         <div class="valid-feedback">
             Looks good!
           </div>
     </div>
     <div class="mb-3 col-8 offset-2">
         <label for="description" class="form-label">Description</label>
-        <textarea name="description" id="" class="form-control" required ><%= data.description %></textarea>
+        <textarea name="listing[description]" id="" class="form-control" required ><%= data.description %></textarea>
         <div class="invalid-feedback">
             Please write short discription
           </div>
     </div>
 
     <div class="mb-3 col-8 offset-2">
-        <label for="image" class="form-label">Image's URL</label>
-        <input type="text" placeholder="enter image's link/url" name="image.url" class="form-control" value="<%= data.image.url %>" >
+        Image Preview: <br>
+        <img src="<%=lowQualityImg%>" alt="old listing img" style="height: 8rem; border-radius: 0.5rem;"> <br>
+        <label for="image" class="form-label">Upload Image:&nbsp;&nbsp;&nbsp;(optional)</label>
+        <input type="file" placeholder="enter image's link/url" name="image.url" class="form-control" value="<%= data.image.url %>" >
     </div>
 
     <div class="row">
         <div class="mb-3 col-3 offset-2">
             <label for="price" class="form-label">Price</label>
-            <input type="text" name="price" placeholder="enter price" class="form-control" value="<%= data.price %>" required>
+            <input type="text" name="listing[price]" placeholder="enter price" class="form-control" value="<%= data.price %>" required>
             <div class="invalid-feedback">
                 Please write Price
               </div>
         </div>
         <div class="mb-3 col-5">
             <label for="country" class="form-label">Country</label>
-            <input type="text" name="country" placeholder="enter country" class="form-control" value="<%= data.country %>" required>
+            <input type="text" name="listing[country]" placeholder="enter country" class="form-control" value="<%= data.country %>" required>
             <div class="invalid-feedback">
                 Please enter correct country
               </div>
@@ -41,7 +43,7 @@
     </div>
     <div class="mb-3 col-8 offset-2">
         <label for="location" class="form-label">Location</label>
-        <input type="text" name="location" placeholder="enter location" class="form-control" value="<%= data.location %>" required>
+        <input type="text" name="listing[location]" placeholder="enter location" class="form-control" value="<%= data.location %>" required>
         <div class="invalid-feedback">
             Please write correct location
           </div>
