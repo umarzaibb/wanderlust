@@ -1,5 +1,8 @@
 <% layout('layouts/boilerplate') -%>
 <body>
+    <script>
+        let MAP_KEY='<%=process.env.MAP_KEY%>';
+    </script>
     <div class="row">
         <i><h4 class="mt-2 col-8 offset-3"><%=data.title %> </h4></i>
         <img src="<%= data.image.url %>" class="detail-img col-8 offset-3" alt="listing_image">
@@ -73,4 +76,8 @@
     </div>
     <% } %>
 </div>
+<hr>
+<h3 style="margin-left:20vw">Where you'll be</h3>
+<div class="mb-4" id="map" style="height: 350px; width: 60vw; margin-left: 20vw;"></div>
+<script src="/js/map.js"></script>
 </body>
