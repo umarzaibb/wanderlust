@@ -1,5 +1,6 @@
 const Listing=require("../models/dbModel.js"); 
 let ExpressError=require("../utils/expresserror.js");
+const {GEOCODE}=require("../utils/geocoding.js");
 
 module.exports.showListing=async(req,res)=>{
     let data=await Listing.find({});
@@ -11,7 +12,7 @@ module.exports.addListingForm=(req,res)=>{
 };
 
 module.exports.submitListingForm=async(req,res,next)=>{
-   try{
+
      let {path,filename}=req.file;
      let {title, description, price, country, location}=req.body;
      let data={
@@ -26,25 +27,42 @@ module.exports.submitListingForm=async(req,res,next)=>{
       },
       owner: req.user
      }
-    //  data.image.url=url;
-    //  data.image.filename=filename;
-    //  data.owner=req.user;
-    //  console.log(data);
+     await GEOCODE(location,country).then((result)=>{
+      console.log(result.lat +"  "+ result.lon);
+      data.geometry={
+        type:"Point",
+        "coordinates" : [
+       result.lon, result.lat
+     ]
+  }
+   data.owner=req.user;
+     console.log(data);
      let newListing=new Listing(data);
-     await newListing.save().then(
+        newListing.save().then(
      req.flash("success" , "Successfully added new listing"),
     );
      res.redirect("/listing");
-    }catch(err){
-     next(err);
-     }
+    
+ 
+     })
+     .catch((err)=>{next(err)})
+    //  data.owner=req.user;
+    //  console.log(data);
+    //  let newListing=new Listing(data);
+    //  newListing.save().then(
+    //  req.flash("success" , "Successfully added new listing"),
+    // );
+    //  res.redirect("/listing");
+    // }catch(err){
+    //  next(err);
+    //  }
    };
 
 module.exports.ListingDetail=async(req,res)=>{
     let {id}=req.params;
     let data=await Listing.findById(id)
     .populate({path: "review" , populate: {path: "created_by"}})
-    .populate("owner");
+    .populate("owner").populate("geometry");
     
     if(!data){
      req.flash("error", "Listing not found");

@@ -48,6 +48,17 @@ let ListingSchema=new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User",
         required:true
+    },
+    geometry: {
+        type: {
+            type: String, // Don't do `{ location: { type: String } }`
+            enum: ['Point'], // 'location.type' must be 'Point'
+            required: true
+          },
+          coordinates: {
+            type: [Number],
+            required: true
+          }
     }
 });
 
@@ -66,6 +77,6 @@ function insertInDB(){
     }
 }
 
-insertInDB();
-Listings.insertMany(data.data);
+// insertInDB();
+// Listings.insertMany(data.data);
 module.exports=Listings;
