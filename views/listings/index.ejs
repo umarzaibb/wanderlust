@@ -1,6 +1,108 @@
 <% layout('layouts/boilerplate') -%>
 <br>
-    <h4 id="all-listing-h">All Listings:</h4>
+<style>
+  body{
+    overflow-x:hidden;
+  }
+  .exloration-icons{
+    display: flex;
+    width:100vw;
+    margin-bottom: 1.5rem;
+    margin-top: 0.75rem;
+  }
+  .exp-icon {
+    margin-left: 1.2rem;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+  }
+
+  .exp-icon span  {
+    font-size: smaller;
+    margin-left: 0.3rem;
+  }
+
+  .exp-icon:hover{
+    opacity: 1;
+  }
+
+  .form-check-reverse{
+    display: flex;
+    border: 1.5px solid rgb(199, 199, 199);
+    height: 2rem;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 11rem;
+    border-radius: 0.3rem;
+  }
+.form-check-reverse label{
+    font-size: x-small;
+    font-weight: 500;
+}
+
+.form-check-reverse input{ 
+  margin-bottom: 3px;
+  font-size: small;
+}
+
+.tax_price{
+  display: inline;
+}
+</style>
+
+    <div class="exloration-icons ms-4">
+      <div class="exp-icon">
+        <i class="fa-solid fa-fire"></i>
+        <span>
+          Trending
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-ship"></i>
+        <span>
+          Boating
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-tractor"></i>
+        <span>
+          Farming
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-igloo"></i>
+        <span>
+          Arctic
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-umbrella-beach"></i>
+        <span>
+          Beach
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-mountain-sun"></i>
+        <span>
+          Mountain
+        </span>
+      </div>
+      <div class="exp-icon">
+        <i class="fa-solid fa-sun"></i>
+        <span>
+          Tropical
+        </span>
+      </div>
+      <div class="form-check-reverse form-switch ms-5">
+        <label class="form-check-label ms-2" for="flexSwitchCheckChecked">Prices total before taxes</label>
+        <input class="form-check-input ms-2" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+
+      </div>
+    
+    </div>
+     
+
 
     <div class="row row-of-index row-cols-lg-3 row-cols-md-3 ">
         <% for(listing of data) { %>
@@ -12,12 +114,27 @@
                         </div>
                         <div class="card-body">
                           <b><p class="card-text"><%= listing.title %></p></b>
-                          <p>&#8377;<%= listing.price.toLocaleString()%>/night</p>
+                          <pre>&#8377;<%= listing.price.toLocaleString()%>/night<span class="tax_price">&nbsp;<i>+10% GST</i></span></pre>
                         </div>
                       </div>
                 </div>
              </a>
         <% } %>
     </div>
+
 </body>
+<script>
+  let tax_inp=document.getElementById("flexSwitchCheckChecked");
+  let tax_p=document.getElementsByClassName("tax_price");
+  console.log(tax_p)
+  tax_inp.addEventListener("change", ()=>{
+    for(i of tax_p){
+  if(i.style.display=="none"){
+    i.style.display="inline";
+  }else{
+    i.style.display="none";
+  }
+}
+  })
+</script>
 </html>
