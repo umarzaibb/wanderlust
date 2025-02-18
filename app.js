@@ -62,11 +62,11 @@ app.get("/" ,(req,res)=>{
 });
 
 
-
-main().catch(err => console.log(err));
+let dbURL=process.env.ATLAS_DB_URL;
+main().then(()=> console.log("Connected DB successfully!")).catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+  await mongoose.connect(dbURL);
 }
 
 

@@ -3,7 +3,7 @@ maptilersdk.config.apiKey = MAP_KEY;
       container: 'map', // container's id or the HTML element in which the SDK will render the map
       style: maptilersdk.MapStyle.STREETS,
       center: (Coordinates.split(",")), // starting position [lng, lat]
-      zoom: 12 // starting zoom
+      zoom: 9 // starting zoom
     });
 
     const marker = new maptilersdk.Marker({

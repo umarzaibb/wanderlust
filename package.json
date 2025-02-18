@@ -1,7 +1,7 @@
 {
   "name": "wanderlust",
   "version": "1.0.0",
-  "description": "this is full stack project and clone of Airbnb",
+  "description": "Full-stack travelling and property website",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +20,7 @@
     "express-session": "^1.18.1",
     "joi": "^17.13.3",
     "method-override": "^3.0.0",
-    "mongoose": "^8.9.5",
+    "mongoose": "^8.10.1",
     "multer": "^1.4.5-lts.1",
     "multer-storage-cloudinary": "^4.0.0",
     "passport": "^0.7.0",
