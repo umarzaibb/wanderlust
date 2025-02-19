@@ -11,20 +11,30 @@ let  ejsMate= require('ejs-mate');
 const ExpressError=require("./utils/expresserror.js");
 const Passport=require("passport");
 const PassportConfig=require("./authentication/passport.js");
+let dbURL=process.env.ATLAS_DB_URL;
 
 const cookieParser=require("cookie-parser");
 const session = require('express-session');
 const flash = require('connect-flash');
+const MongoStore=require("connect-mongo");
 
 let sessionOptions={
-  secret: 'iHaveSecrets',
-  resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false, // don't create session until something stored
+  resave: false, //don't save session if unmodified
+  secret: "MySuperSecretCodeHere!",
   cookie: { 
     httpOnly:true,
     expires: Date.now()+ 3*24*60*60*1000,
     maxAge: 3*24*60*60*1000
-  }};
+  },
+   store : MongoStore.create({
+    mongoUrl: dbURL, 
+    crypto: {
+    secret: 'MySuperSecretCodeHere!'
+  },
+    touchAfter: 24 * 3600 // time period in seconds
+  })
+};
 
 //routes
 const ListingRoute=require("./routes/listingRoute.js");
@@ -62,7 +72,6 @@ app.get("/" ,(req,res)=>{
 });
 
 
-let dbURL=process.env.ATLAS_DB_URL;
 main().then(()=> console.log("Connected DB successfully!")).catch(err => console.log(err));
 
 async function main() {
